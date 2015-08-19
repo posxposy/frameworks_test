@@ -1,0 +1,16 @@
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\App.exe
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\App.pdb
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\App.csprojResolveAssemblyReference.cache
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\App.exe
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\App.pdb
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\Framework.dll
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\Framework.pdb
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\Data\wabbit_alpha.xnb
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\Data\default.xnb
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\Data\fill.xnb
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\App.exe.manifest
+E:\Projects\monogame-test\App\App\App\bin\x86\Debug\App.application
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\App.TrustInfo.xml
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\App.exe.manifest
+E:\Projects\monogame-test\App\App\App\obj\x86\Debug\App.application

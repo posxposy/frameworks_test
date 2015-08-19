@@ -1,0 +1,2 @@
+E:\Projects\monogame-test\App\App\AppContent\obj\x86\Release\AppContent.contentprojResolveAssemblyReference.cache
+E:\Projects\___Bunnymark\XNA_Monogame\App\AppContent\obj\x86\Release\AppContent.contentprojResolveAssemblyReference.cache

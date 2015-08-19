@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="FlTest" package="com.sample.fltest" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="FlTest" />
+	<window fps="60" width="800" height="600" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+	
+	<assets path="Assets" rename="assets" />
+	
+</project>

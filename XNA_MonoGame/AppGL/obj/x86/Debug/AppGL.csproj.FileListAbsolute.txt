@@ -1,0 +1,10 @@
+E:\Projects\monogame-test\App\AppGL\obj\x86\Debug\AppGL.csprojResolveAssemblyReference.cache
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\Content\fill.xnb
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\Content\wabbit_alpha.xnb
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\AppGL.exe
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\AppGL.pdb
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\MonoGame.Framework.dll
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\OpenTK.dll
+E:\Projects\monogame-test\App\AppGL\obj\x86\Debug\AppGL.exe
+E:\Projects\monogame-test\App\AppGL\obj\x86\Debug\AppGL.pdb
+E:\Projects\monogame-test\App\AppGL\bin\WindowsGL\Debug\Content\default.xnb
