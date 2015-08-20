@@ -134,9 +134,11 @@ class BunnyMark extends Application implements IRenderable
 				if (k >= rabbits.length) k = 0;
 			}		
 			
-			if (Input.Pressed(KeyCode.Mouse0))
+			var is_insert:Bool = Input.Pressed(KeyCode.Mouse0) || (Input.touches.length == 1);
+			
+			if (is_insert)
 			{
-				var ht : Float32 = Input.GetHoldTime(KeyCode.Mouse0)*2.0;								
+				var ht : Float32 = Input.GetHoldTime(KeyCode.Mouse0)*2.0;
 				var insert:Int = Std.int((ht + 1.0) * 100.0);
 				for (i in 0...insert)
 				{

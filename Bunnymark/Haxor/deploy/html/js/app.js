@@ -501,7 +501,8 @@ BunnyMark.prototype = $extend(haxor_core_Application.prototype,{
 				k++;
 				if(k >= _g.rabbits.length) k = 0;
 			}
-			if(haxor_input_Input.Pressed(haxor_input_KeyCode.Mouse0)) {
+			var is_insert = haxor_input_Input.Pressed(haxor_input_KeyCode.Mouse0) || haxor_input_Input.get_touches().length == 1;
+			if(is_insert) {
 				var ht = haxor_input_Input.GetHoldTime(haxor_input_KeyCode.Mouse0) * 2.0;
 				var insert = (ht + 1.0) * 100.0 | 0;
 				var _g12 = 0;
