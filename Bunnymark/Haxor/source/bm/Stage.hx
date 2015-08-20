@@ -59,7 +59,7 @@ class Stage extends MeshRenderer
 		var c : Int = p_sprite_count;
 		m_list 	  = new Process<Sprite>("sprites", c);		
 		var tw : Int = Std.int(Mathf.Ceil(Mathf.Sqrt(p_sprite_count)));
-		m_sd 	  = new ComputeTexture(tw, tw, PixelFormat.Float4);
+		m_sd 	  = new ComputeTexture(tw, tw, PixelFormat.Float3);
 		
 		trace("Data Texture w["+tw+"] h["+tw+"]");
 		
@@ -199,7 +199,7 @@ class Stage extends MeshRenderer
 	private function OnSpriteBuild(s:Sprite):Void   
 	{ 
 		s.__cid = ids.id;
-		s.__sdp = s.__cid * 4;
+		s.__sdp = s.__cid * m_sd.data.channels;
 		OnSpriteTransform(s);		
 	}
 	private function OnSpriteDestroy(s:Sprite):Void { ids.id = s.__cid; }
@@ -249,9 +249,15 @@ void main()
 	
 	uv   = v.xy;
 	uv.x = uv.x + 0.5;
-		
-	v.x = (v.x * SPRITE_W) + vd.x;
-	v.y = (v.y * SPRITE_H) + vd.y;// +d.y;
+	
+	
+	float s 
+	= 1.0;
+	//= Count / 500000.0;
+	//s = max(0.25, 1.0 - s);
+	
+	v.x = (v.x * SPRITE_W*s) + vd.x;
+	v.y = (v.y * SPRITE_H*s) + vd.y;// +d.y;
 	
 	v = (v * ViewMatrix) * ProjectionMatrix;
 	gl_Position = v;

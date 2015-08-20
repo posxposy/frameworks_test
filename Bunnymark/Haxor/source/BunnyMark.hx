@@ -18,6 +18,8 @@ import haxor.graphics.material.Shader;
 import haxor.graphics.mesh.Model;
 import haxor.graphics.Screen;
 import haxor.graphics.texture.Texture2D;
+import haxor.input.Input;
+import haxor.input.KeyCode;
 import haxor.math.AABB2;
 import haxor.math.Color;
 import haxor.math.Mathf;
@@ -66,7 +68,7 @@ class BunnyMark extends Application implements IRenderable
 		cam.background = Color.FromHex("0x222222");
 		//*/
 		
-		count = 200000;
+		count = 800000;
 		
 		#if html
 		
@@ -74,10 +76,8 @@ class BunnyMark extends Application implements IRenderable
 		hash = hash.substr(1);
 		
 		var c : Int = Std.parseInt(hash);
-		if (!Math.isNaN(c)) count = c;
-		
-		var el : js.html.Element = cast js.Browser.document.querySelector("#field");
-		el.textContent = count + " Bunnies";
+		if(c!=null)if (!Math.isNaN(c)) count = c;
+				
 		#end
 		
 		
@@ -89,31 +89,34 @@ class BunnyMark extends Application implements IRenderable
 		
 		var sh : Float32 = Screen.height;
 		
-		for (i in 0...count)
+		
+		
+		for (i in 0...1000)
 		{
-			var s : Sprite = new Sprite("bunny" + i);
-			s.x = Random.Range(-Screen.width*0.45, Screen.width*0.45);
-			s.y = sh - Random.Range(0, sh * 0.8);
-			s.speed.y = Random.Range( -200, 200);
-			s.speed.x = Random.Range( -200, 200);
-			canvas.Add(s);
-			rabbits.push(s);
+			AddBunny();
 		}
 		
 		
+		var k : Int = 0;
 		
 		Activity.Run(function(t:Float):Bool
 		{
-			var lw : Float32 = Screen.width * 0.5;
-		
+			var lw : Float32 = Screen.width * 0.5;		
 			var lh : Float32 = Screen.height;
 			
-			for (i in 0...rabbits.length)
+			var len : Int = Std.int(rabbits.length / 2);
+			
+			var mx : Float32 = Input.mouse.x;
+			var my : Float32 = Input.mouse.y;
+			
+			for (i in 0...len)
 			{
-				var s : Sprite = rabbits[i];
-				s.speed.y -= Time.delta * 980.0;
-				s.x += s.speed.x * Time.delta;
-				s.y += s.speed.y * Time.delta;
+				var dt : Float32 = Time.delta * 2.0;
+				dt = Mathf.Min(dt, 1.0 / 30.0);
+				var s : Sprite = rabbits[k];
+				s.speed.y -= dt * 980.0;
+				s.x += s.speed.x * dt;
+				s.y += s.speed.y * dt;
 				
 				if (s.x <= -lw) s.speed.x =  Mathf.Abs(s.speed.x);
 				else
@@ -122,32 +125,48 @@ class BunnyMark extends Application implements IRenderable
 				if (s.y < 0.0)
 				{
 					s.speed.y = Mathf.Abs(s.speed.y);
+					if (s.speed.y < 1.0) s.speed.y = Random.Range(100,800);
 					s.y = 0.0;
+				}	
+				k++;
+				if (k >= rabbits.length) k = 0;
+			}		
+			
+			if (Input.Pressed(KeyCode.Mouse0))
+			{
+				var ht : Float32 = Input.GetHoldTime(KeyCode.Mouse0)*2.0;								
+				var insert:Int = Std.int((ht + 1.0) * 100.0);
+				for (i in 0...insert)
+				{
+					AddBunny();
 				}
 			}
+			
+			
 			return true;
 		});
 		
-		
-		/*
-		var mat : Material = new Material("Flat");
-		mat.shader = Shader.FlatTexture;
-		mat.SetTexture("DiffuseTexture", Texture2D.green);
-		mat.SetColor("Tint", Color.white);
-		
-		
-		var sphere : MeshRenderer = (new Entity("sphere")).AddComponent(MeshRenderer);
-		sphere.mesh = Model.screen;
-		sphere.material = mat;
-		//*/
-		/*
-		var o : CameraOrbit = CameraOrbit.Create(4.0, 45, 45);				
-		o.camera.background = new Color(0.2, 0.2, 0.2);
-		var ci : CameraOrbitInput = o.AddComponent(CameraOrbitInput);
-		//*/
-		
 	}
 	
+	/**
+	 * Adds a bunny.
+	 */
+	private function AddBunny():Void
+	{
+		var sw : Float32 = Screen.width;
+		var sh : Float32 = Screen.height;
+		var s : Sprite = new Sprite("bunny"+rabbits.length);
+		s.x = Random.Range(-sw*0.45, sw*0.45);
+		s.y = sh - Random.Range(0, sh * 0.8);
+		s.speed.y = Random.Range( -200, 200);
+		s.speed.x = Random.Range( -200, 200);
+		canvas.Add(s);
+		rabbits.push(s);		
+		#if html
+		var el : js.html.Element = cast js.Browser.document.querySelector("#field");
+		el.textContent = rabbits.length + " Bunnies";
+		#end
+	}
 	
 	/**
 	 * Add stats js

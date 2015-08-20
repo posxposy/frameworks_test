@@ -455,52 +455,75 @@ BunnyMark.prototype = $extend(haxor_core_Application.prototype,{
 		this.cam = new haxor_core_Entity("camera").AddComponent(haxor_component_Camera);
 		this.cam.set_mode(haxor_core_CameraMode.Ortho);
 		this.cam.background = haxor_math_Color.FromHex("0x222222");
-		this.count = 200000;
+		this.count = 800000;
 		var hash = window.location.hash;
 		hash = HxOverrides.substr(hash,1,null);
 		var c = Std.parseInt(hash);
-		if(!isNaN(c)) this.count = c;
-		var el = window.document.querySelector("#field");
-		el.textContent = this.count + " Bunnies";
+		if(c != null) {
+			if(!isNaN(c)) this.count = c;
+		}
 		this.canvas = new haxor_core_Entity("stage").AddComponent(bm_Stage);
 		this.canvas.Initialize(this.count);
 		this.rabbits = [];
 		var sh = haxor_graphics_Screen.m_height;
 		var _g1 = 0;
-		var _g2 = this.count;
-		while(_g1 < _g2) {
+		while(_g1 < 1000) {
 			var i = _g1++;
-			var s = new bm_Sprite("bunny" + i);
-			s.set_x(haxor_math_Random.Range(-haxor_graphics_Screen.m_width * 0.45,haxor_graphics_Screen.m_width * 0.45));
-			s.set_y(sh - haxor_math_Random.Range(0,sh * 0.8));
-			s.speed.y = haxor_math_Random.Range(-200,200);
-			s.speed.x = haxor_math_Random.Range(-200,200);
-			this.canvas.Add(s);
-			this.rabbits.push(s);
+			this.AddBunny();
 		}
+		var k = 0;
 		haxor_thread_Activity.Run(function(t) {
 			var lw = haxor_graphics_Screen.m_width * 0.5;
 			var lh = haxor_graphics_Screen.m_height;
-			var _g21 = 0;
-			var _g11 = _g.rabbits.length;
-			while(_g21 < _g11) {
-				var i1 = _g21++;
-				var s1 = _g.rabbits[i1];
-				s1.speed.y -= haxor_core_Time.m_delta * 980.0;
-				var _g3 = s1;
-				_g3.set_x(_g3.m_x + s1.speed.x * haxor_core_Time.m_delta);
-				var _g31 = s1;
-				_g31.set_y(_g31.m_y + s1.speed.y * haxor_core_Time.m_delta);
-				if(s1.m_x <= -lw) s1.speed.x = haxor_math_Mathf.Abs(s1.speed.x); else if(s1.m_x >= lw) s1.speed.x = -haxor_math_Mathf.Abs(s1.speed.x);
-				if(s1.m_y < 0.0) {
-					s1.speed.y = haxor_math_Mathf.Abs(s1.speed.y);
-					s1.m_y = 0.0;
-					s1.get_stage().OnSpriteTransform(s1);
+			var len = _g.rabbits.length / 2 | 0;
+			var mx = haxor_input_Input.mouse.x;
+			var my = haxor_input_Input.mouse.y;
+			var _g11 = 0;
+			while(_g11 < len) {
+				var i1 = _g11++;
+				var dt = haxor_core_Time.m_delta * 2.0;
+				dt = Math.min(dt,0.033333333333333333);
+				var s = _g.rabbits[k];
+				s.speed.y -= dt * 980.0;
+				var _g2 = s;
+				_g2.set_x(_g2.m_x + s.speed.x * dt);
+				var _g21 = s;
+				_g21.set_y(_g21.m_y + s.speed.y * dt);
+				if(s.m_x <= -lw) s.speed.x = haxor_math_Mathf.Abs(s.speed.x); else if(s.m_x >= lw) s.speed.x = -haxor_math_Mathf.Abs(s.speed.x);
+				if(s.m_y < 0.0) {
+					s.speed.y = haxor_math_Mathf.Abs(s.speed.y);
+					if(s.speed.y < 1.0) s.speed.y = haxor_math_Random.Range(100,800);
+					s.m_y = 0.0;
+					s.get_stage().OnSpriteTransform(s);
 					0.0;
+				}
+				k++;
+				if(k >= _g.rabbits.length) k = 0;
+			}
+			if(haxor_input_Input.Pressed(haxor_input_KeyCode.Mouse0)) {
+				var ht = haxor_input_Input.GetHoldTime(haxor_input_KeyCode.Mouse0) * 2.0;
+				var insert = (ht + 1.0) * 100.0 | 0;
+				var _g12 = 0;
+				while(_g12 < insert) {
+					var i2 = _g12++;
+					_g.AddBunny();
 				}
 			}
 			return true;
 		});
+	}
+	,AddBunny: function() {
+		var sw = haxor_graphics_Screen.m_width;
+		var sh = haxor_graphics_Screen.m_height;
+		var s = new bm_Sprite("bunny" + this.rabbits.length);
+		s.set_x(haxor_math_Random.Range(-sw * 0.45,sw * 0.45));
+		s.set_y(sh - haxor_math_Random.Range(0,sh * 0.8));
+		s.speed.y = haxor_math_Random.Range(-200,200);
+		s.speed.x = haxor_math_Random.Range(-200,200);
+		this.canvas.Add(s);
+		this.rabbits.push(s);
+		var el = window.document.querySelector("#field");
+		el.textContent = this.rabbits.length + " Bunnies";
 	}
 	,InitStats: function() {
 		var stats = new Stats();
@@ -1063,7 +1086,7 @@ bm_Stage.prototype = $extend(haxor_component_MeshRenderer.prototype,{
 		var c = p_sprite_count;
 		this.m_list = new haxor_context_Process("sprites",c);
 		var tw = Std["int"](haxor_math_Mathf.Ceil(Math.sqrt(p_sprite_count)));
-		this.m_sd = new haxor_graphics_texture_ComputeTexture(tw,tw,haxor_core_PixelFormat.Float4);
+		this.m_sd = new haxor_graphics_texture_ComputeTexture(tw,tw,haxor_core_PixelFormat.Float3);
 		console.log("Data Texture w[" + tw + "] h[" + tw + "]");
 		var s1 = 0.5;
 		var s2 = 1.0;
@@ -1147,7 +1170,7 @@ bm_Stage.prototype = $extend(haxor_component_MeshRenderer.prototype,{
 	}
 	,OnSpriteBuild: function(s) {
 		s.__cid = bm_Stage.ids.get_id();
-		s.__sdp = s.__cid * 4;
+		s.__sdp = s.__cid * this.m_sd.m_data.m_channels;
 		this.OnSpriteTransform(s);
 	}
 	,OnSpriteDestroy: function(s) {
@@ -18967,7 +18990,7 @@ Xml.Comment = 3;
 Xml.DocType = 4;
 Xml.ProcessingInstruction = 5;
 Xml.Document = 6;
-bm_Stage.vs_stage = "\r\n#define SPRITE_W 26.0\r\n#define SPRITE_H 37.0\r\n\r\nuniform mat4 ProjectionMatrix;\r\nuniform mat4 ViewMatrix;\r\nuniform sampler2D SpriteData;\r\nuniform float SpriteDataSizeX;\r\nuniform float SpriteDataSizeY;\r\nuniform float Count;\r\nattribute vec3 vertex;\r\nattribute vec3 position;\r\n\r\nvarying vec2 uv;\r\nvarying vec2 d_uv;\r\nvarying float v_id;\r\n\r\nvoid main()\r\n{\r\n\tvec4 v = vec4(vertex.xyz, 1.0);\r\n\tfloat sid = v.z;\r\n\tint count = int(Count);\r\n\tif (int(sid) >= count)\r\n\t{\r\n\t\tv *= 0.0;\r\n\t\tv += 10000.0;\r\n\t\tgl_Position = v;\r\n\t\treturn;\t\r\n\t}\r\n\tv.z = -v.z / 100000.0;\r\n\t\r\n\tv_id = v.z;\r\n\t\r\n\tvec2 d = vec2(0.0);\r\n\td.x = mod(sid, SpriteDataSizeX) / (SpriteDataSizeX);\r\n\td.y = (sid / SpriteDataSizeY) / (SpriteDataSizeY);\r\n\t\r\n\td_uv = d;\r\n\t\r\n\tvec4 vd = texture2D(SpriteData,d);\t\r\n\t\r\n\tuv   = v.xy;\r\n\tuv.x = uv.x + 0.5;\r\n\t\t\r\n\tv.x = (v.x * SPRITE_W) + vd.x;\r\n\tv.y = (v.y * SPRITE_H) + vd.y;// +d.y;\r\n\t\r\n\tv = (v * ViewMatrix) * ProjectionMatrix;\r\n\tgl_Position = v;\r\n}\r\n\t";
+bm_Stage.vs_stage = "\r\n#define SPRITE_W 26.0\r\n#define SPRITE_H 37.0\r\n\r\nuniform mat4 ProjectionMatrix;\r\nuniform mat4 ViewMatrix;\r\nuniform sampler2D SpriteData;\r\nuniform float SpriteDataSizeX;\r\nuniform float SpriteDataSizeY;\r\nuniform float Count;\r\nattribute vec3 vertex;\r\nattribute vec3 position;\r\n\r\nvarying vec2 uv;\r\nvarying vec2 d_uv;\r\nvarying float v_id;\r\n\r\nvoid main()\r\n{\r\n\tvec4 v = vec4(vertex.xyz, 1.0);\r\n\tfloat sid = v.z;\r\n\tint count = int(Count);\r\n\tif (int(sid) >= count)\r\n\t{\r\n\t\tv *= 0.0;\r\n\t\tv += 10000.0;\r\n\t\tgl_Position = v;\r\n\t\treturn;\t\r\n\t}\r\n\tv.z = -v.z / 100000.0;\r\n\t\r\n\tv_id = v.z;\r\n\t\r\n\tvec2 d = vec2(0.0);\r\n\td.x = mod(sid, SpriteDataSizeX) / (SpriteDataSizeX);\r\n\td.y = (sid / SpriteDataSizeY) / (SpriteDataSizeY);\r\n\t\r\n\td_uv = d;\r\n\t\r\n\tvec4 vd = texture2D(SpriteData,d);\t\r\n\t\r\n\tuv   = v.xy;\r\n\tuv.x = uv.x + 0.5;\r\n\t\r\n\t\r\n\tfloat s \r\n\t= 1.0;\r\n\t//= Count / 500000.0;\r\n\t//s = max(0.25, 1.0 - s);\r\n\t\r\n\tv.x = (v.x * SPRITE_W*s) + vd.x;\r\n\tv.y = (v.y * SPRITE_H*s) + vd.y;// +d.y;\r\n\t\r\n\tv = (v * ViewMatrix) * ProjectionMatrix;\r\n\tgl_Position = v;\r\n}\r\n\t";
 bm_Stage.fs_stage = "\r\nuniform sampler2D SpriteData;\r\nuniform sampler2D Texture;\r\nuniform float Count;\r\nvarying vec2 uv;\r\nvarying vec2 d_uv;\r\nvarying float v_id;\r\n\r\nvoid main()\r\n{\r\n\tvec4 c = texture2D(Texture, uv);\t\r\n\tgl_FragColor = c;\r\n}\r\n\t";
 haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS);
