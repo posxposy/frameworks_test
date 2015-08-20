@@ -12,6 +12,7 @@ import haxor.graphics.material.Shader;
 import haxor.graphics.mesh.Mesh;
 import haxor.graphics.mesh.MeshLayout.Mesh2D;
 import haxor.graphics.texture.ComputeTexture;
+import haxor.graphics.texture.Texture;
 import haxor.graphics.texture.Texture2D;
 import haxor.io.FloatArray;
 import haxor.math.AABB3;
@@ -141,7 +142,8 @@ class Stage extends MeshRenderer
 		m_mat.SetTexture("SpriteData", m_sd);
 		m_mat.SetFloat("SpriteDataSizeX", m_sd.width);
 		m_mat.SetFloat("SpriteDataSizeY", m_sd.height);
-		m_mat.SetTexture("Texture", Asset.Get("BunnyTexture"));
+		var tex : Texture = Asset.Get("BunnyTexture");
+		m_mat.SetTexture("Texture", tex == null ? Texture2D.red : tex);
 		m_mat.SetFloat("Count", 0);
 		m_mat.cull = CullMode.Back;
 		
@@ -192,7 +194,8 @@ class Stage extends MeshRenderer
 		var f32 : FloatArray = cast t.data.buffer;
 		var p   : Int = s.__sdp;
 		f32.Set(p,   s.x);
-		f32.Set(p+1, s.y);		
+		f32.Set(p + 1, s.y);
+		f32.Set(p + 2, s.size);		
 		m_dirty = true;
 	}
 	
@@ -252,7 +255,8 @@ void main()
 	
 	
 	float s 
-	= 1.0;
+	//= 1.0;
+	= vd.z;
 	//= Count / 500000.0;
 	//s = max(0.25, 1.0 - s);
 	

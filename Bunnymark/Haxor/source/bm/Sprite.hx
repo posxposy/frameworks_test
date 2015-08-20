@@ -1,5 +1,6 @@
 package bm;
 import haxor.core.Resource;
+import haxor.math.Random;
 import haxor.math.Vector2;
 import haxor.platform.Types.Float32;
 
@@ -33,6 +34,8 @@ class Sprite extends Resource
 	inline private function set_y(v:Float32):Float32 { m_y = v; stage.OnSpriteTransform(this); return v; }
 	private var m_y:Float32;
 	
+	public var size : Float32;
+	
 	public var speed:Vector2;
 	
 	/**
@@ -43,6 +46,7 @@ class Sprite extends Resource
 	{
 		super(p_name);		
 		m_x = m_y = 0;
+		size = Random.Range(1.3, 0.5);
 		speed = new Vector2();		
 		stage.OnSpriteBuild(this);
 	}

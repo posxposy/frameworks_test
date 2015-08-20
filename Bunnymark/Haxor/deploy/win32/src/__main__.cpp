@@ -6,8 +6,8 @@ extern "C" void __hxcpp_main();
 
 extern "C" void __hxcpp_lib_main();
 
-#ifndef INCLUDED_MainWindows
-#include <MainWindows.h>
+#ifndef INCLUDED_BunnyMark
+#include <BunnyMark.h>
 #endif
 #ifndef INCLUDED_haxor_component_Behaviour
 #include <haxor/component/Behaviour.h>
@@ -39,7 +39,7 @@ extern "C" void __hxcpp_lib_main();
 #include <hx/HxcppMain.h>
 
 void __hxcpp_main() {
-::MainWindows_obj::main();
+::BunnyMark_obj::main();
 	}
 
 void __hxcpp_lib_main() {

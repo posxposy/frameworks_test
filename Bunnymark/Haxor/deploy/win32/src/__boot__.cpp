@@ -60,11 +60,8 @@
 #ifndef INCLUDED_haxor_input_Input
 #include <haxor/input/Input.h>
 #endif
-#ifndef INCLUDED_haxor_graphics_material_shader_FlexShader
-#include <haxor/graphics/material/shader/FlexShader.h>
-#endif
-#ifndef INCLUDED_haxor_graphics_material_shader_TemplateShader
-#include <haxor/graphics/material/shader/TemplateShader.h>
+#ifndef INCLUDED_haxor_graphics_material_Shader
+#include <haxor/graphics/material/Shader.h>
 #endif
 #ifndef INCLUDED_haxor_graphics_material_MaterialUniform
 #include <haxor/graphics/material/MaterialUniform.h>
@@ -192,17 +189,20 @@
 #ifndef INCLUDED_haxe_Http
 #include <haxe/Http.h>
 #endif
+#ifndef INCLUDED_bm_Stage
+#include <bm/Stage.h>
+#endif
 #ifndef INCLUDED_Xml
 #include <Xml.h>
 #endif
 #ifndef INCLUDED_Sys
 #include <Sys.h>
 #endif
-#ifndef INCLUDED_haxor_core_Resource
-#include <haxor/core/Resource.h>
-#endif
 #ifndef INCLUDED_EReg
 #include <EReg.h>
+#endif
+#ifndef INCLUDED_haxor_core_Resource
+#include <haxor/core/Resource.h>
 #endif
 #ifndef INCLUDED_haxor_thread_Kernel
 #include <haxor/thread/Kernel.h>
@@ -276,32 +276,17 @@
 #ifndef INCLUDED_haxor_math_AABB3
 #include <haxor/math/AABB3.h>
 #endif
-#ifndef INCLUDED_haxor_io_serialization_ISerializable
-#include <haxor/io/serialization/ISerializable.h>
+#ifndef INCLUDED_haxor_io_serialization_haxor_HaxorFormatter
+#include <haxor/io/serialization/haxor/HaxorFormatter.h>
 #endif
-#ifndef INCLUDED_haxor_io_serialization_HaxorFormatter
-#include <haxor/io/serialization/HaxorFormatter.h>
+#ifndef INCLUDED_haxor_io_serialization_SerializedField
+#include <haxor/io/serialization/SerializedField.h>
 #endif
-#ifndef INCLUDED_haxor_io_serialization_HaxorFormatterField
-#include <haxor/io/serialization/HaxorFormatterField.h>
-#endif
-#ifndef INCLUDED_haxor_io_serialization_HaxorFormatterNode
-#include <haxor/io/serialization/HaxorFormatterNode.h>
-#endif
-#ifndef INCLUDED_haxor_io_serialization_FormatterNode
-#include <haxor/io/serialization/FormatterNode.h>
-#endif
-#ifndef INCLUDED_haxor_io_serialization_FormatterField
-#include <haxor/io/serialization/FormatterField.h>
+#ifndef INCLUDED_haxor_io_serialization_SerializedData
+#include <haxor/io/serialization/SerializedData.h>
 #endif
 #ifndef INCLUDED_haxor_io_serialization_Formatter
 #include <haxor/io/serialization/Formatter.h>
-#endif
-#ifndef INCLUDED_haxor_io_file_MaterialFileUniform
-#include <haxor/io/file/MaterialFileUniform.h>
-#endif
-#ifndef INCLUDED_haxor_io_file_MaterialFile
-#include <haxor/io/file/MaterialFile.h>
 #endif
 #ifndef INCLUDED_haxor_io_file_ColladaLight
 #include <haxor/io/file/ColladaLight.h>
@@ -423,11 +408,23 @@
 #ifndef INCLUDED_haxor_graphics_mesh_Mesh
 #include <haxor/graphics/mesh/Mesh.h>
 #endif
+#ifndef INCLUDED_haxor_graphics_material_shader_FlexShader
+#include <haxor/graphics/material/shader/FlexShader.h>
+#endif
 #ifndef INCLUDED_haxor_graphics_material_UberShader
 #include <haxor/graphics/material/UberShader.h>
 #endif
-#ifndef INCLUDED_haxor_graphics_material_Shader
-#include <haxor/graphics/material/Shader.h>
+#ifndef INCLUDED_haxor_graphics_material_ShaderCompileResult
+#include <haxor/graphics/material/ShaderCompileResult.h>
+#endif
+#ifndef INCLUDED_haxor_graphics_material_ShaderCompilation
+#include <haxor/graphics/material/ShaderCompilation.h>
+#endif
+#ifndef INCLUDED_haxor_graphics_material_ShaderError
+#include <haxor/graphics/material/ShaderError.h>
+#endif
+#ifndef INCLUDED_haxor_graphics_material_UniformInfo
+#include <haxor/graphics/material/UniformInfo.h>
 #endif
 #ifndef INCLUDED_haxor_graphics_Screen
 #include <haxor/graphics/Screen.h>
@@ -482,6 +479,9 @@
 #endif
 #ifndef INCLUDED_haxor_core_IFixedUpdateable
 #include <haxor/core/IFixedUpdateable.h>
+#endif
+#ifndef INCLUDED_haxor_io_serialization_ISerializable
+#include <haxor/io/serialization/ISerializable.h>
 #endif
 #ifndef INCLUDED_haxor_core_Engine
 #include <haxor/core/Engine.h>
@@ -585,12 +585,6 @@
 #ifndef INCLUDED_haxor_component_SkinnedMeshRenderer
 #include <haxor/component/SkinnedMeshRenderer.h>
 #endif
-#ifndef INCLUDED_haxor_component_MeshRenderer
-#include <haxor/component/MeshRenderer.h>
-#endif
-#ifndef INCLUDED_haxor_component_Renderer
-#include <haxor/component/Renderer.h>
-#endif
 #ifndef INCLUDED_haxor_component_DataComponent
 #include <haxor/component/DataComponent.h>
 #endif
@@ -654,6 +648,15 @@
 #ifndef INCLUDED_cpp_vm_Thread
 #include <cpp/vm/Thread.h>
 #endif
+#ifndef INCLUDED_haxor_component_MeshRenderer
+#include <haxor/component/MeshRenderer.h>
+#endif
+#ifndef INCLUDED_haxor_component_Renderer
+#include <haxor/component/Renderer.h>
+#endif
+#ifndef INCLUDED_bm_Sprite
+#include <bm/Sprite.h>
+#endif
 #ifndef INCLUDED_Type
 #include <Type.h>
 #endif
@@ -669,8 +672,23 @@
 #ifndef INCLUDED_Reflect
 #include <Reflect.h>
 #endif
-#ifndef INCLUDED_MainWindows
-#include <MainWindows.h>
+#ifndef INCLUDED__List_ListIterator
+#include <_List/ListIterator.h>
+#endif
+#ifndef INCLUDED_List
+#include <List.h>
+#endif
+#ifndef INCLUDED_Lambda
+#include <Lambda.h>
+#endif
+#ifndef INCLUDED_cpp_Lib
+#include <cpp/Lib.h>
+#endif
+#ifndef INCLUDED_Date
+#include <Date.h>
+#endif
+#ifndef INCLUDED_BunnyMark
+#include <BunnyMark.h>
 #endif
 #ifndef INCLUDED_haxor_core_IRenderable
 #include <haxor/core/IRenderable.h>
@@ -692,21 +710,6 @@
 #endif
 #ifndef INCLUDED_haxor_core_IDisposable
 #include <haxor/core/IDisposable.h>
-#endif
-#ifndef INCLUDED__List_ListIterator
-#include <_List/ListIterator.h>
-#endif
-#ifndef INCLUDED_List
-#include <List.h>
-#endif
-#ifndef INCLUDED_Lambda
-#include <Lambda.h>
-#endif
-#ifndef INCLUDED_cpp_Lib
-#include <cpp/Lib.h>
-#endif
-#ifndef INCLUDED_Date
-#include <Date.h>
 #endif
 
 void __files__boot();
@@ -735,8 +738,7 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::input::KeyCode_obj::__register();
 ::haxor::input::Joystick_obj::__register();
 ::haxor::input::Input_obj::__register();
-::haxor::graphics::material::shader::FlexShader_obj::__register();
-::haxor::graphics::material::shader::TemplateShader_obj::__register();
+::haxor::graphics::material::Shader_obj::__register();
 ::haxor::graphics::material::MaterialUniform_obj::__register();
 ::haxor::graphics::material::Material_obj::__register();
 ::haxor::graphics::Graphics_obj::__register();
@@ -779,10 +781,11 @@ hx::RegisterResources( hx::GetResources() );
 ::haxe::crypto::Base64_obj::__register();
 ::haxe::Log_obj::__register();
 ::haxe::Http_obj::__register();
+::bm::Stage_obj::__register();
 ::Xml_obj::__register();
 ::Sys_obj::__register();
-::haxor::core::Resource_obj::__register();
 ::EReg_obj::__register();
+::haxor::core::Resource_obj::__register();
 ::haxor::thread::Kernel_obj::__register();
 ::haxor::platform::windows::input::WinInputHandler_obj::__register();
 ::haxor::platform::windows::Window_obj::__register();
@@ -807,15 +810,10 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::math::Vector2_obj::__register();
 ::haxor::math::Random_obj::__register();
 ::haxor::math::AABB3_obj::__register();
-::haxor::io::serialization::ISerializable_obj::__register();
-::haxor::io::serialization::HaxorFormatter_obj::__register();
-::haxor::io::serialization::HaxorFormatterField_obj::__register();
-::haxor::io::serialization::HaxorFormatterNode_obj::__register();
-::haxor::io::serialization::FormatterNode_obj::__register();
-::haxor::io::serialization::FormatterField_obj::__register();
+::haxor::io::serialization::haxor::HaxorFormatter_obj::__register();
+::haxor::io::serialization::SerializedField_obj::__register();
+::haxor::io::serialization::SerializedData_obj::__register();
 ::haxor::io::serialization::Formatter_obj::__register();
-::haxor::io::file::MaterialFileUniform_obj::__register();
-::haxor::io::file::MaterialFile_obj::__register();
 ::haxor::io::file::ColladaLight_obj::__register();
 ::haxor::io::file::ColladaAnimationKeyFrame_obj::__register();
 ::haxor::io::file::ColladaAnimationChannel_obj::__register();
@@ -856,8 +854,12 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::graphics::mesh::MeshLayout_obj::__register();
 ::haxor::graphics::mesh::MeshAttrib_obj::__register();
 ::haxor::graphics::mesh::Mesh_obj::__register();
+::haxor::graphics::material::shader::FlexShader_obj::__register();
 ::haxor::graphics::material::UberShader_obj::__register();
-::haxor::graphics::material::Shader_obj::__register();
+::haxor::graphics::material::ShaderCompileResult_obj::__register();
+::haxor::graphics::material::ShaderCompilation_obj::__register();
+::haxor::graphics::material::ShaderError_obj::__register();
+::haxor::graphics::material::UniformInfo_obj::__register();
 ::haxor::graphics::Screen_obj::__register();
 ::haxor::math::AABB2_obj::__register();
 ::haxor::graphics::GraphicContext_obj::__register();
@@ -876,6 +878,7 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::core::RenderEngine_obj::__register();
 ::haxor::core::ILateUpdateable_obj::__register();
 ::haxor::core::IFixedUpdateable_obj::__register();
+::haxor::io::serialization::ISerializable_obj::__register();
 ::haxor::core::Engine_obj::__register();
 ::haxor::context::UID_obj::__register();
 ::haxor::context::TransformContext_obj::__register();
@@ -910,8 +913,6 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::component::animation::AnimationClip_obj::__register();
 ::haxor::component::animation::Animation_obj::__register();
 ::haxor::component::SkinnedMeshRenderer_obj::__register();
-::haxor::component::MeshRenderer_obj::__register();
-::haxor::component::Renderer_obj::__register();
 ::haxor::component::DataComponent_obj::__register();
 ::haxor::core::IUpdateable_obj::__register();
 ::haxor::core::IResizeable_obj::__register();
@@ -933,12 +934,20 @@ hx::RegisterResources( hx::GetResources() );
 ::haxe::Timer_obj::__register();
 ::haxe::IMap_obj::__register();
 ::cpp::vm::Thread_obj::__register();
+::haxor::component::MeshRenderer_obj::__register();
+::haxor::component::Renderer_obj::__register();
+::bm::Sprite_obj::__register();
 ::Type_obj::__register();
 ::StringTools_obj::__register();
 ::StringBuf_obj::__register();
 ::Std_obj::__register();
 ::Reflect_obj::__register();
-::MainWindows_obj::__register();
+::_List::ListIterator_obj::__register();
+::List_obj::__register();
+::Lambda_obj::__register();
+::cpp::Lib_obj::__register();
+::Date_obj::__register();
+::BunnyMark_obj::__register();
 ::haxor::core::IRenderable_obj::__register();
 ::haxor::core::Application_obj::__register();
 ::haxor::platform::windows::WinApplication_obj::__register();
@@ -946,11 +955,6 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::component::Behaviour_obj::__register();
 ::haxor::component::Component_obj::__register();
 ::haxor::core::IDisposable_obj::__register();
-::_List::ListIterator_obj::__register();
-::List_obj::__register();
-::Lambda_obj::__register();
-::cpp::Lib_obj::__register();
-::Date_obj::__register();
 ::haxor::graphics::CursorMode_obj::__boot();
 ::haxor::graphics::GraphicAPI_obj::__boot();
 ::haxor::core::ColliderType_obj::__boot();
@@ -967,6 +971,7 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::core::Resource_obj::__boot();
 ::Sys_obj::__boot();
 ::Xml_obj::__boot();
+::bm::Stage_obj::__boot();
 ::haxe::Http_obj::__boot();
 ::haxe::crypto::Base64_obj::__boot();
 ::haxe::xml::Parser_obj::__boot();
@@ -1008,8 +1013,7 @@ hx::RegisterResources( hx::GetResources() );
 ::haxor::graphics::Graphics_obj::__boot();
 ::haxor::graphics::material::Material_obj::__boot();
 ::haxor::graphics::material::MaterialUniform_obj::__boot();
-::haxor::graphics::material::shader::TemplateShader_obj::__boot();
-::haxor::graphics::material::shader::FlexShader_obj::__boot();
+::haxor::graphics::material::Shader_obj::__boot();
 ::haxor::input::Input_obj::__boot();
 ::haxor::input::Joystick_obj::__boot();
 ::haxor::input::KeyCode_obj::__boot();

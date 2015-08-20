@@ -57,9 +57,6 @@ void __GetFields(Array< ::String> &outFields);
 		virtual Dynamic keys( );
 		Dynamic keys_dyn();
 
-		virtual Dynamic iterator( );
-		Dynamic iterator_dyn();
-
 
   inline void set(String key, ::null value) { __string_hash_set(h,key,value); }
   inline void set(String key, bool value) { __string_hash_set(h,key,value); }

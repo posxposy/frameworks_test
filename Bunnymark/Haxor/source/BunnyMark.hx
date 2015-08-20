@@ -48,7 +48,7 @@ class BunnyMark extends Application implements IRenderable
 	
 	override public function Load():Bool 
 	{
-		Asset.LoadTexture2D("BunnyTexture", "img/wabbit.png");
+		Asset.LoadTexture2D("BunnyTexture", "http://haxor.xyz/demos/bunny-mark/img/wabbit.png");
 		return false;
 	}
 	
@@ -68,9 +68,11 @@ class BunnyMark extends Application implements IRenderable
 		cam.background = Color.FromHex("0x222222");
 		//*/
 		
-		count = 800000;
+		count = 300000;
 		
 		#if html
+		
+		if (application.browser.mobile) count = 10000;
 		
 		var hash : String = js.Browser.window.location.hash;
 		hash = hash.substr(1);
@@ -153,6 +155,7 @@ class BunnyMark extends Application implements IRenderable
 	 */
 	private function AddBunny():Void
 	{
+		if (rabbits.length >= count) return;
 		var sw : Float32 = Screen.width;
 		var sh : Float32 = Screen.height;
 		var s : Sprite = new Sprite("bunny"+rabbits.length);
@@ -164,7 +167,7 @@ class BunnyMark extends Application implements IRenderable
 		rabbits.push(s);		
 		#if html
 		var el : js.html.Element = cast js.Browser.document.querySelector("#field");
-		el.textContent = rabbits.length + " Bunnies";
+		el.textContent = rabbits.length + " Bunnies - Max "+count;
 		#end
 	}
 	
@@ -209,6 +212,10 @@ class BunnyMark extends Application implements IRenderable
 	
 	public function OnRender():Void
 	{
+		#if windows
+		var w : haxor.platform.windows.Window = application.window;
+		if((Time.frame%60)==0)w.title = "BunnyMark Windows - "+Time.fps+"fps - "+rabbits.length+" bunnies";
+		#end
 		//Gizmo.Grid(100.0);
 	}
 	
