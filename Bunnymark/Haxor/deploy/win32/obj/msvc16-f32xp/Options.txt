@@ -1,0 +1,3 @@
+HXCPP_FLOAT32=1
+hxcpp_api_level=321
+hxcpp=F:\development\resource\platform\haxe\3_1_2\lib/hxcpp/3,2,37/
