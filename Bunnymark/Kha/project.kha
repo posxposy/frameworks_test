@@ -1,5 +1,5 @@
 {
-	"format": 2,
+	"format": 3,
 	"game": {
 		"name": "Empty",
 		"width": 800,
@@ -7,20 +7,20 @@
 	},
 	"assets": [
 		{
-            "type": "image",
-            "file": "fill.png",
-            "name": "fill"
-        },	
+			"type": "image",
+			"file": "fill.png",
+			"name": "fill"
+		},
 		{
-            "type": "image",
-            "file": "wabbit_alpha.png",
-            "name": "wabbit_alpha"
-        },
+			"type": "image",
+			"file": "wabbit_alpha.png",
+			"name": "wabbit_alpha"
+		},
 		{
 			"type": "blob",
 			"file": "Arial14.kravur",
 			"name": "Arial14.kravur"
-		}        
+		}
 	],
 	"rooms": [
 		{
@@ -28,10 +28,10 @@
 			"parent": null,
 			"neighbours": [],
 			"assets": [
-				"fill",	
+				"fill",
 				"wabbit_alpha",
 				"Arial14.kravur"
 			]
-		}	
+		}
 	]
 }

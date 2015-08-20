@@ -17,7 +17,6 @@ import kha.Music;
 import kha.Sys;
 import kha.FontStyle;
 
-
 class Empty extends Game {
 	private var backbuffer: Image;
 	private var bunnies:Array<Bunny>;
