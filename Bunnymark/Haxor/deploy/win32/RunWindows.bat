@@ -1,1 +1,0 @@
-BunnyMark.exe -main BunnyMark
