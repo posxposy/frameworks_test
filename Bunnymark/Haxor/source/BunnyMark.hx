@@ -94,7 +94,7 @@ class BunnyMark extends Application implements IRenderable
 		
 		
 		
-		for (i in 0...3)
+		for (i in 0...1000)
 		{
 			AddBunny();
 		}

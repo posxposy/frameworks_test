@@ -223,7 +223,7 @@ void main()
 	}
 	v.z *= 0.0000001;
 	
-	vec2 d = vec2(mod(sid, SpriteDataSizeX) / (SpriteDataSizeX).0,(sid / SpriteDataSizeY) / (SpriteDataSizeY));
+	vec2 d = vec2(mod(sid, SpriteDataSizeX) / (SpriteDataSizeX),(sid / SpriteDataSizeY) / (SpriteDataSizeY));
 	
 	vec4 vd = texture2D(SpriteData,d);	
 	

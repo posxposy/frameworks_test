@@ -468,7 +468,7 @@ BunnyMark.prototype = $extend(haxor_core_Application.prototype,{
 		this.rabbits = [];
 		var sh = haxor_graphics_Screen.m_height;
 		var _g1 = 0;
-		while(_g1 < 3) {
+		while(_g1 < 1000) {
 			var i = _g1++;
 			this.AddBunny();
 		}
@@ -19014,7 +19014,7 @@ Xml.Comment = 3;
 Xml.DocType = 4;
 Xml.ProcessingInstruction = 5;
 Xml.Document = 6;
-bm_Stage.vs_stage = "\r\n#define SPRITE_W 26.0\r\n#define SPRITE_H 37.0\r\n\r\nuniform mat4 ProjectionMatrix;\r\nuniform mat4 ViewMatrix;\r\nuniform sampler2D SpriteData;\r\nuniform float SpriteDataSizeX;\r\nuniform float SpriteDataSizeY;\r\nuniform float Count;\r\nattribute vec3 vertex;\r\nattribute vec3 position;\r\n\r\nvarying vec2 uv;\r\n\r\nvoid main()\r\n{\r\n\tvec4 v = vec4(vertex.xyz, 1.0);\r\n\tfloat sid = v.z;\r\n\tint count = int(Count);\r\n\tif (int(sid) >= count)\r\n\t{\r\n\t\tv.z = -1000000000.0;\r\n\t\tgl_Position = v;\r\n\t\treturn;\t\t\t\r\n\t}\r\n\tv.z *= 0.0000001;\r\n\t\r\n\tvec2 d = vec2(mod(sid, SpriteDataSizeX) / (SpriteDataSizeX).0,(sid / SpriteDataSizeY) / (SpriteDataSizeY));\r\n\t\r\n\tvec4 vd = texture2D(SpriteData,d);\t\r\n\t\r\n\tuv   = v.xy;\r\n\tuv.x = uv.x + 0.5;\r\n\t\t\r\n\tfloat s = vd.z;\t\r\n\tv.x = (v.x * SPRITE_W*s) + vd.x;\r\n\tv.y = (v.y * SPRITE_H*s) + vd.y;\t\r\n\tv = (v * ViewMatrix) * ProjectionMatrix;\r\n\tgl_Position = v;\r\n}\r\n\t";
+bm_Stage.vs_stage = "\r\n#define SPRITE_W 26.0\r\n#define SPRITE_H 37.0\r\n\r\nuniform mat4 ProjectionMatrix;\r\nuniform mat4 ViewMatrix;\r\nuniform sampler2D SpriteData;\r\nuniform float SpriteDataSizeX;\r\nuniform float SpriteDataSizeY;\r\nuniform float Count;\r\nattribute vec3 vertex;\r\nattribute vec3 position;\r\n\r\nvarying vec2 uv;\r\n\r\nvoid main()\r\n{\r\n\tvec4 v = vec4(vertex.xyz, 1.0);\r\n\tfloat sid = v.z;\r\n\tint count = int(Count);\r\n\tif (int(sid) >= count)\r\n\t{\r\n\t\tv.z = -1000000000.0;\r\n\t\tgl_Position = v;\r\n\t\treturn;\t\t\t\r\n\t}\r\n\tv.z *= 0.0000001;\r\n\t\r\n\tvec2 d = vec2(mod(sid, SpriteDataSizeX) / (SpriteDataSizeX),(sid / SpriteDataSizeY) / (SpriteDataSizeY));\r\n\t\r\n\tvec4 vd = texture2D(SpriteData,d);\t\r\n\t\r\n\tuv   = v.xy;\r\n\tuv.x = uv.x + 0.5;\r\n\t\t\r\n\tfloat s = vd.z;\t\r\n\tv.x = (v.x * SPRITE_W*s) + vd.x;\r\n\tv.y = (v.y * SPRITE_H*s) + vd.y;\t\r\n\tv = (v * ViewMatrix) * ProjectionMatrix;\r\n\tgl_Position = v;\r\n}\r\n\t";
 bm_Stage.fs_stage = "\r\nuniform sampler2D SpriteData;\r\nuniform sampler2D Texture;\r\nuniform float Count;\r\nvarying vec2 uv;\r\n\r\nvoid main()\r\n{\r\n\tvec4 c = texture2D(Texture, uv);\t\r\n\tif (c.a <= 0.008) { discard; }\r\n\tgl_FragColor = c;\r\n}\r\n\t";
 haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS);
