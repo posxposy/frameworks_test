@@ -468,32 +468,33 @@ BunnyMark.prototype = $extend(haxor_core_Application.prototype,{
 		this.rabbits = [];
 		var sh = haxor_graphics_Screen.m_height;
 		var _g1 = 0;
-		while(_g1 < 1000) {
+		while(_g1 < 3) {
 			var i = _g1++;
 			this.AddBunny();
 		}
 		var k = 0;
+		var explode = -1;
 		haxor_thread_Activity.Run(function(t) {
 			var lw = haxor_graphics_Screen.m_width * 0.5;
 			var lh = haxor_graphics_Screen.m_height;
-			var len = _g.rabbits.length / 2 | 0;
-			var mx = haxor_input_Input.mouse.x;
-			var my = haxor_input_Input.mouse.y;
+			var len = _g.rabbits.length / 1.5 | 0;
+			var mx = haxor_input_Input.mouse.x - lw;
+			var my = -20.0;
 			var _g11 = 0;
 			while(_g11 < len) {
 				var i1 = _g11++;
-				var dt = haxor_core_Time.m_delta * 2.0;
-				dt = Math.min(dt,0.033333333333333333);
 				var s = _g.rabbits[k];
+				var dt = haxor_core_Time.m_delta * 1.5;
+				dt = Math.min(dt,0.025);
 				s.speed.y -= dt * 980.0;
 				var _g2 = s;
 				_g2.set_x(_g2.m_x + s.speed.x * dt);
 				var _g21 = s;
 				_g21.set_y(_g21.m_y + s.speed.y * dt);
-				if(s.m_x <= -lw) s.speed.x = haxor_math_Mathf.Abs(s.speed.x); else if(s.m_x >= lw) s.speed.x = -haxor_math_Mathf.Abs(s.speed.x);
-				if(s.m_y < 0.0) {
-					s.speed.y = haxor_math_Mathf.Abs(s.speed.y);
-					if(s.speed.y < 1.0) s.speed.y = haxor_math_Random.Range(100,800);
+				if(s.m_x <= -lw) s.speed.x = haxor_math_Mathf.Abs(s.speed.x) * 0.8; else if(s.m_x >= lw) s.speed.x = -haxor_math_Mathf.Abs(s.speed.x) * 0.8;
+				if(s.m_y <= 0.0) {
+					s.speed.y = haxor_math_Mathf.Abs(s.speed.y) * 0.8;
+					s.speed.x = s.speed.x * 0.95;
 					s.m_y = 0.0;
 					s.get_stage().OnSpriteTransform(s);
 					0.0;
@@ -509,6 +510,22 @@ BunnyMark.prototype = $extend(haxor_core_Application.prototype,{
 				while(_g12 < insert) {
 					var i2 = _g12++;
 					_g.AddBunny();
+				}
+			}
+			if(haxor_input_Input.Down(haxor_input_KeyCode.Mouse2)) {
+				var _g22 = 0;
+				var _g13 = _g.rabbits.length;
+				while(_g22 < _g13) {
+					var i3 = _g22++;
+					var s1 = _g.rabbits[i3];
+					var p = haxor_context_EngineContext.data.get_v2().Set(s1.m_x - mx,s1.m_y - my);
+					var r = haxor_math_Mathf.Clamp01((600 - Math.sqrt(p.x * p.x + p.y * p.y)) / 600.0);
+					if(r > 0) {
+						p.Normalize();
+						var f = haxor_math_Random.Range(600,1500);
+						s1.speed.x += p.x * r * f;
+						s1.speed.y += p.y * r * f;
+					}
 				}
 			}
 			return true;
@@ -1115,6 +1132,7 @@ bm_Stage.prototype = $extend(haxor_component_MeshRenderer.prototype,{
 			id += 1.0;
 		}
 		this.m_sm.Set("vertex",f32,3);
+		console.log("Stage> Mesh created with [" + f32.m_length / 18 + "] planes");
 		f32 = new haxor_io_FloatArray(c * plane.length);
 		k = 0;
 		var _g3 = 0;
@@ -1136,8 +1154,6 @@ bm_Stage.prototype = $extend(haxor_component_MeshRenderer.prototype,{
 		this.m_sm.set_bounds(haxor_context_EngineContext.data.get_aabb3().Set(-1000,1000,-1000,1000,-1000,1000));
 		this.set_mesh(this.m_sm);
 		this.m_mat = new haxor_graphics_material_Material("StageMaterial");
-		this.m_mat.SetBlending(770,771);
-		this.m_mat.blend = true;
 		this.m_mat.SetTexture("SpriteData",this.m_sd);
 		this.m_mat.SetFloat("SpriteDataSizeX",this.m_sd.m_width);
 		this.m_mat.SetFloat("SpriteDataSizeY",this.m_sd.m_height);
@@ -1146,6 +1162,8 @@ bm_Stage.prototype = $extend(haxor_component_MeshRenderer.prototype,{
 		this.m_mat.SetFloat("Count",0);
 		this.m_mat.cull = 2;
 		var ss = new haxor_graphics_material_Shader(bm_Stage.vs_stage,bm_Stage.fs_stage);
+		ss.precision = 9;
+		ss.Compile();
 		this.m_mat.set_shader(ss);
 		this.set_material(this.m_mat);
 	}
@@ -18996,8 +19014,8 @@ Xml.Comment = 3;
 Xml.DocType = 4;
 Xml.ProcessingInstruction = 5;
 Xml.Document = 6;
-bm_Stage.vs_stage = "\r\n#define SPRITE_W 26.0\r\n#define SPRITE_H 37.0\r\n\r\nuniform mat4 ProjectionMatrix;\r\nuniform mat4 ViewMatrix;\r\nuniform sampler2D SpriteData;\r\nuniform float SpriteDataSizeX;\r\nuniform float SpriteDataSizeY;\r\nuniform float Count;\r\nattribute vec3 vertex;\r\nattribute vec3 position;\r\n\r\nvarying vec2 uv;\r\nvarying vec2 d_uv;\r\nvarying float v_id;\r\n\r\nvoid main()\r\n{\r\n\tvec4 v = vec4(vertex.xyz, 1.0);\r\n\tfloat sid = v.z;\r\n\tint count = int(Count);\r\n\tif (int(sid) >= count)\r\n\t{\r\n\t\tv *= 0.0;\r\n\t\tv += 10000.0;\r\n\t\tgl_Position = v;\r\n\t\treturn;\t\r\n\t}\r\n\tv.z = -v.z / 100000.0;\r\n\t\r\n\tv_id = v.z;\r\n\t\r\n\tvec2 d = vec2(0.0);\r\n\td.x = mod(sid, SpriteDataSizeX) / (SpriteDataSizeX);\r\n\td.y = (sid / SpriteDataSizeY) / (SpriteDataSizeY);\r\n\t\r\n\td_uv = d;\r\n\t\r\n\tvec4 vd = texture2D(SpriteData,d);\t\r\n\t\r\n\tuv   = v.xy;\r\n\tuv.x = uv.x + 0.5;\r\n\t\r\n\t\r\n\tfloat s \r\n\t//= 1.0;\r\n\t= vd.z;\r\n\t//= Count / 500000.0;\r\n\t//s = max(0.25, 1.0 - s);\r\n\t\r\n\tv.x = (v.x * SPRITE_W*s) + vd.x;\r\n\tv.y = (v.y * SPRITE_H*s) + vd.y;// +d.y;\r\n\t\r\n\tv = (v * ViewMatrix) * ProjectionMatrix;\r\n\tgl_Position = v;\r\n}\r\n\t";
-bm_Stage.fs_stage = "\r\nuniform sampler2D SpriteData;\r\nuniform sampler2D Texture;\r\nuniform float Count;\r\nvarying vec2 uv;\r\nvarying vec2 d_uv;\r\nvarying float v_id;\r\n\r\nvoid main()\r\n{\r\n\tvec4 c = texture2D(Texture, uv);\t\r\n\tgl_FragColor = c;\r\n}\r\n\t";
+bm_Stage.vs_stage = "\r\n#define SPRITE_W 26.0\r\n#define SPRITE_H 37.0\r\n\r\nuniform mat4 ProjectionMatrix;\r\nuniform mat4 ViewMatrix;\r\nuniform sampler2D SpriteData;\r\nuniform float SpriteDataSizeX;\r\nuniform float SpriteDataSizeY;\r\nuniform float Count;\r\nattribute vec3 vertex;\r\nattribute vec3 position;\r\n\r\nvarying vec2 uv;\r\n\r\nvoid main()\r\n{\r\n\tvec4 v = vec4(vertex.xyz, 1.0);\r\n\tfloat sid = v.z;\r\n\tint count = int(Count);\r\n\tif (int(sid) >= count)\r\n\t{\r\n\t\tv.z = -1000000000.0;\r\n\t\tgl_Position = v;\r\n\t\treturn;\t\t\t\r\n\t}\r\n\tv.z *= 0.0000001;\r\n\t\r\n\tvec2 d = vec2(mod(sid, SpriteDataSizeX) / (SpriteDataSizeX).0,(sid / SpriteDataSizeY) / (SpriteDataSizeY));\r\n\t\r\n\tvec4 vd = texture2D(SpriteData,d);\t\r\n\t\r\n\tuv   = v.xy;\r\n\tuv.x = uv.x + 0.5;\r\n\t\t\r\n\tfloat s = vd.z;\t\r\n\tv.x = (v.x * SPRITE_W*s) + vd.x;\r\n\tv.y = (v.y * SPRITE_H*s) + vd.y;\t\r\n\tv = (v * ViewMatrix) * ProjectionMatrix;\r\n\tgl_Position = v;\r\n}\r\n\t";
+bm_Stage.fs_stage = "\r\nuniform sampler2D SpriteData;\r\nuniform sampler2D Texture;\r\nuniform float Count;\r\nvarying vec2 uv;\r\n\r\nvoid main()\r\n{\r\n\tvec4 c = texture2D(Texture, uv);\t\r\n\tif (c.a <= 0.008) { discard; }\r\n\tgl_FragColor = c;\r\n}\r\n\t";
 haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS);
 haxe_ds_ObjectMap.count = 0;

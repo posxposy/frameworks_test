@@ -7,6 +7,7 @@ import haxor.core.Asset;
 import haxor.core.Enums.BlendMode;
 import haxor.core.Enums.CullMode;
 import haxor.core.Enums.PixelFormat;
+import haxor.core.Enums.ShaderPrecision;
 import haxor.graphics.material.Material;
 import haxor.graphics.material.Shader;
 import haxor.graphics.mesh.Mesh;
@@ -99,6 +100,8 @@ class Stage extends MeshRenderer
 		}		
 		m_sm.Set("vertex", f32, 3);				
 		
+		trace("Stage> Mesh created with ["+(f32.length/18)+"] planes");
+		
 		f32 = new FloatArray(c * plane.length);
 		k = 0;
 		for (i in 0...c)
@@ -115,30 +118,11 @@ class Stage extends MeshRenderer
 		}		
 		m_sm.Set("position", f32, 3);		
 		
-		/*
-		f32 = cast m_sd.data.buffer;
-		k = 0;
-		var cl : Array<Color> = [Color.red, Color.yellow, Color.green, Color.cyan, Color.blue, Color.magenta];
-		for (i in 0...f32.length)
-		{
-			var pid:  Int = i % 4;
-			var cid: Int  = Std.int((i / 4) % cl.length);
-			var c : Color = cl[cid];
-			switch(pid)
-			{
-				case 0: f32.Set(k++, c.r);
-				case 1: f32.Set(k++, c.g);
-				case 2: f32.Set(k++, c.b);
-				case 3: f32.Set(k++, c.a);
-			}
-		}
-		//*/
-		
 		m_sm.bounds = AABB3.temp.Set( -1000, 1000, -1000, 1000, -1000, 1000);
 		mesh = m_sm;		
 		m_mat = new Material("StageMaterial");		
-		m_mat.SetBlending(BlendMode.SrcAlpha, BlendMode.OneMinusSrcAlpha);
-		m_mat.blend = true;
+		//m_mat.SetBlending(BlendMode.SrcAlpha, BlendMode.OneMinusSrcAlpha);		
+		
 		m_mat.SetTexture("SpriteData", m_sd);
 		m_mat.SetFloat("SpriteDataSizeX", m_sd.width);
 		m_mat.SetFloat("SpriteDataSizeY", m_sd.height);
@@ -147,7 +131,9 @@ class Stage extends MeshRenderer
 		m_mat.SetFloat("Count", 0);
 		m_mat.cull = CullMode.Back;
 		
-		var ss : Shader = new Shader(vs_stage, fs_stage);		
+		var ss : Shader = new Shader(vs_stage, fs_stage);	
+		ss.precision = ShaderPrecision.FragmentLow | ShaderPrecision.VertexLow;
+		ss.Compile();
 		m_mat.shader = ss;
 		
 		material = m_mat;
@@ -202,7 +188,7 @@ class Stage extends MeshRenderer
 	private function OnSpriteBuild(s:Sprite):Void   
 	{ 
 		s.__cid = ids.id;
-		s.__sdp = s.__cid * m_sd.data.channels;
+		s.__sdp = s.__cid * m_sd.data.channels;		
 		OnSpriteTransform(s);		
 	}
 	private function OnSpriteDestroy(s:Sprite):Void { ids.id = s.__cid; }
@@ -223,8 +209,6 @@ attribute vec3 vertex;
 attribute vec3 position;
 
 varying vec2 uv;
-varying vec2 d_uv;
-varying float v_id;
 
 void main()
 {
@@ -233,36 +217,22 @@ void main()
 	int count = int(Count);
 	if (int(sid) >= count)
 	{
-		v *= 0.0;
-		v += 10000.0;
+		v.z = -1000000000.0;
 		gl_Position = v;
-		return;	
+		return;			
 	}
-	v.z = -v.z / 100000.0;
+	v.z *= 0.0000001;
 	
-	v_id = v.z;
-	
-	vec2 d = vec2(0.0);
-	d.x = mod(sid, SpriteDataSizeX) / (SpriteDataSizeX);
-	d.y = (sid / SpriteDataSizeY) / (SpriteDataSizeY);
-	
-	d_uv = d;
+	vec2 d = vec2(mod(sid, SpriteDataSizeX) / (SpriteDataSizeX).0,(sid / SpriteDataSizeY) / (SpriteDataSizeY));
 	
 	vec4 vd = texture2D(SpriteData,d);	
 	
 	uv   = v.xy;
 	uv.x = uv.x + 0.5;
-	
-	
-	float s 
-	//= 1.0;
-	= vd.z;
-	//= Count / 500000.0;
-	//s = max(0.25, 1.0 - s);
-	
+		
+	float s = vd.z;	
 	v.x = (v.x * SPRITE_W*s) + vd.x;
-	v.y = (v.y * SPRITE_H*s) + vd.y;// +d.y;
-	
+	v.y = (v.y * SPRITE_H*s) + vd.y;	
 	v = (v * ViewMatrix) * ProjectionMatrix;
 	gl_Position = v;
 }
@@ -274,12 +244,11 @@ uniform sampler2D SpriteData;
 uniform sampler2D Texture;
 uniform float Count;
 varying vec2 uv;
-varying vec2 d_uv;
-varying float v_id;
 
 void main()
 {
 	vec4 c = texture2D(Texture, uv);	
+	if (c.a <= 0.008) { discard; }
 	gl_FragColor = c;
 }
 	';

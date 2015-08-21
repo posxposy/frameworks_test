@@ -24,6 +24,7 @@ import haxor.math.AABB2;
 import haxor.math.Color;
 import haxor.math.Mathf;
 import haxor.math.Random;
+import haxor.math.Vector2;
 import haxor.math.Vector3;
 import haxor.platform.Types.Float32;
 import haxor.thread.Activity;
@@ -93,41 +94,44 @@ class BunnyMark extends Application implements IRenderable
 		
 		
 		
-		for (i in 0...1000)
+		for (i in 0...3)
 		{
 			AddBunny();
 		}
 		
 		
 		var k : Int = 0;
+		var explode : Int = -1;
 		
 		Activity.Run(function(t:Float):Bool
-		{
+		{			
 			var lw : Float32 = Screen.width * 0.5;		
 			var lh : Float32 = Screen.height;
-			
-			var len : Int = Std.int(rabbits.length / 2);
-			
-			var mx : Float32 = Input.mouse.x;
-			var my : Float32 = Input.mouse.y;
+			var len : Int = Std.int(rabbits.length / 1.5);			
+			var mx : Float32 = Input.mouse.x-lw;
+			var my : Float32 = -20.0;// Input.mouse.y;
 			
 			for (i in 0...len)
 			{
-				var dt : Float32 = Time.delta * 2.0;
-				dt = Mathf.Min(dt, 1.0 / 30.0);
 				var s : Sprite = rabbits[k];
+				var dt : Float32 = Time.delta * 1.5;
+				dt = Mathf.Min(dt, 1.0 / 40.0);
+				
 				s.speed.y -= dt * 980.0;
+				
+				
 				s.x += s.speed.x * dt;
 				s.y += s.speed.y * dt;
 				
-				if (s.x <= -lw) s.speed.x =  Mathf.Abs(s.speed.x);
+				if (s.x <= -lw) s.speed.x =  Mathf.Abs(s.speed.x)*0.8;
 				else
-				if (s.x >=  lw) s.speed.x = -Mathf.Abs(s.speed.x);
+				if (s.x >=  lw) s.speed.x = -Mathf.Abs(s.speed.x)*0.8;
 				
-				if (s.y < 0.0)
+				if (s.y <= 0.0)
 				{
-					s.speed.y = Mathf.Abs(s.speed.y);
-					if (s.speed.y < 1.0) s.speed.y = Random.Range(100,800);
+					s.speed.y = Mathf.Abs(s.speed.y) * 0.8;
+					s.speed.x = s.speed.x * 0.95;
+					//if (s.speed.y <= 1.0) s.speed.y = Random.Range(500,1200);
 					s.y = 0.0;
 				}	
 				k++;
@@ -144,6 +148,23 @@ class BunnyMark extends Application implements IRenderable
 				{
 					AddBunny();
 				}
+			}
+			
+			if (Input.Down(KeyCode.Mouse2))
+			{	
+				for (i in 0...rabbits.length)
+				{
+					var s : Sprite = rabbits[i];
+					var p : Vector2 = Vector2.temp.Set(s.x - mx, s.y - my);
+					var r : Float32 = Mathf.Clamp01((600 - p.length)/600.0);
+					if (r > 0)
+					{	
+						p.Normalize();
+						var f : Float32 = Random.Range(600, 1500);
+						s.speed.x += p.x * r * f;
+						s.speed.y += p.y * r * f;				
+					}
+				}				
 			}
 			
 			
