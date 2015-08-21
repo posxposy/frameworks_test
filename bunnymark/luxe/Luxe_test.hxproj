@@ -16,19 +16,18 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="C:\HaxeToolkit\haxe\lib\luxe\git" />
-    <class path="C:\HaxeToolkit\haxe\lib\hxcpp\3,2,102" />
     <class path="C:\HaxeToolkit\haxe\lib\snow\git" />
     <class path="src" />
-    <class path="bin\windows.build\haxe" />
+    <class path="bin\web.build\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="no-compilation&#xA;windows&#xA;arch-32&#xA;desktop&#xA;hxcpp_static_std&#xA;snow_module_input_sdl&#xA;snow_module_audio_openal&#xA;snow_module_windowing_sdl&#xA;luxe_native&#xA;parcel_thread_disabled&#xA;snow_native&#xA;luxe&#xA;hxcpp&#xA;snow" />
+    <option directives="no-compilation&#xA;web&#xA;arch-web&#xA;source-map-content&#xA;hxcpp_static_std&#xA;snow_module_audio_howlerjs&#xA;luxe_web&#xA;snow_web&#xA;luxe&#xA;snow" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="LuxeApp" />
     <option enabledebug="False" />
-    <option additional="-resource version@version&#xA;-resource build@build&#xA;-resource phoenix/defaults/shaders/vert.glsl@default.vert.glsl&#xA;-resource phoenix/defaults/shaders/frag.glsl@default.frag.glsl&#xA;-resource phoenix/defaults/shaders/frag.textured.glsl@default.frag.textured.glsl&#xA;-resource phoenix/defaults/shaders/frag.bitmapfont.glsl@default.frag.bitmapfont.glsl&#xA;-resource luxe/defaults/fonts/default.png@default.png&#xA;-resource luxe/defaults/fonts/default.fnt@default.fnt&#xA;--macro snow.system.module.Module.set(&quot;Audio&quot;,&quot;snow.core.native.audio.Audio&quot;)&#xA;--macro snow.system.module.Module.set(&quot;IO&quot;,&quot;snow.core.native.io.IO&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Input&quot;,&quot;snow.core.native.input.Input&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Windowing&quot;,&quot;snow.core.native.window.Windowing&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Assets&quot;,&quot;snow.core.native.assets.Assets&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Input&quot;,&quot;snow.modules.sdl.Input&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Windowing&quot;,&quot;snow.modules.sdl.Windowing&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Audio&quot;,&quot;snow.modules.openal.Audio&quot;)" />
+    <option additional="-resource version@version&#xA;-resource build@build&#xA;-resource phoenix/defaults/shaders/vert.glsl@default.vert.glsl&#xA;-resource phoenix/defaults/shaders/frag.glsl@default.frag.glsl&#xA;-resource phoenix/defaults/shaders/frag.textured.glsl@default.frag.textured.glsl&#xA;-resource phoenix/defaults/shaders/frag.bitmapfont.glsl@default.frag.bitmapfont.glsl&#xA;-resource luxe/defaults/fonts/default.png@default.png&#xA;-resource luxe/defaults/fonts/default.fnt@default.fnt&#xA;--macro snow.system.module.Module.set(&quot;Audio&quot;,&quot;snow.core.web.audio.Audio&quot;)&#xA;--macro snow.system.module.Module.set(&quot;IO&quot;,&quot;snow.core.web.io.IO&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Input&quot;,&quot;snow.core.web.input.Input&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Windowing&quot;,&quot;snow.core.web.window.Windowing&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Assets&quot;,&quot;snow.core.web.assets.Assets&quot;)&#xA;--macro snow.system.module.Module.set(&quot;Audio&quot;,&quot;snow.modules.howlerjs.Audio&quot;)" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
