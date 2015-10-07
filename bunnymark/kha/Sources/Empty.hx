@@ -28,7 +28,7 @@ class Empty extends Game {
 	private var bunniesCount:Int;
 	
 	private var g:Graphics;
-	private var fps:FPS;
+	private var fps:FramesPerSecond;
 	private var fill:Image;
 	public function new() {
 		super("Empty", false);
@@ -40,7 +40,7 @@ class Empty extends Game {
 		bunniesCount = 0;
 		backbuffer = Image.createRenderTarget(800, 600);
 		g = backbuffer.g2;
-		fps = new FPS();
+		fps = new FramesPerSecond();
 		Configuration.setScreen(new LoadingScreen());
 		Loader.the.loadRoom("test", roomLoaded);			
 	}

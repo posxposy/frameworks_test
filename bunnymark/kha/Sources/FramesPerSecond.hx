@@ -4,7 +4,7 @@ import kha.Scheduler;
  * ...
  * @author The Mozok Team - Dmitry Hryppa
  */
-class FPS
+class FramesPerSecond
 {
 	
 	private var totalFrames:Int;
