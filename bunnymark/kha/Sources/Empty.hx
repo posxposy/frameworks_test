@@ -1,71 +1,77 @@
 package;
 
-
-import kha.audio1.Audio;
-import kha.Button;
-import kha.Configuration;
+import kha.Assets;
+import kha.Font;
 import kha.Framebuffer;
-import kha.Game;
-import kha.graphics2.Graphics;
 import kha.Image;
-import kha.LoadingScreen;
-import kha.math.FastMatrix3;
-import kha.math.Matrix3;
-import kha.Scaler;
-import kha.Loader;
-import kha.Music;
-import kha.Sys;
-import kha.FontStyle;
+import kha.Scheduler;
+import kha.System;
+import kha.input.Mouse;
 
-class Empty extends Game {
-	private var backbuffer: Image;
+/**
+ * ...
+ * @author The Mozok Team - Dmitry Hryppa
+ */
+
+class Empty 
+{
+    private var bunnyTex:Image;
+    private var font:Font;
+    
+    private var bCount:Int = 0;
 	private var bunnies:Array<Bunny>;
 	private var gravity:Float = 0.5;
 	private var maxX:Int;
-	private var minX:Int;
 	private var maxY:Int;
+	private var minX:Int;
 	private var minY:Int;
-	private var bunniesCount:Int;
 	
-	private var g:Graphics;
-	private var fps:FramesPerSecond;
-	private var fill:Image;
-	public function new() {
-		super("Empty", false);
-	}	
+    //------------------------------------------------
+    private var backgroundColor:Int = 0xFF2A3347;
+    private var deltaTime:Float = 0.0;
+    private var totalFrames:Int = 0;
+    private var elapsedTime:Float = 0.0;
+    private var previousTime:Float = 0.0;
+    private var fps:Int = 0;
+    //------------------------------------------------
 	
-	override public function init():Void 
-	{
-		super.init();
-		bunniesCount = 0;
-		backbuffer = Image.createRenderTarget(800, 600);
-		g = backbuffer.g2;
-		fps = new FramesPerSecond();
-		Configuration.setScreen(new LoadingScreen());
-		Loader.the.loadRoom("test", roomLoaded);			
+    public function new() 
+    {
+		Assets.loadEverything(function():Void 
+        {
+            font = Assets.fonts.mainfont;
+            bunnyTex = Assets.images.wabbit_alpha;
+            
+            bunnies = new Array<Bunny>();
+            minX = 0;
+            maxX = Main.SCREEN_W - bunnyTex.width;
+            minY = 0;
+            maxY = Main.SCREEN_H - bunnyTex.height;
+            
+            
+            Mouse.get().notify(mouseDown, null, null, null);
+            Scheduler.addTimeTask(update, 0, 1/60);
+            System.notifyOnRender(render);
+        });
 	}
 	
-	private function roomLoaded():Void
-	{	
-		fill = Loader.the.getImage("fill");
-		g.font = Loader.the.loadFont("Arial", new FontStyle(false, false, false), 14);
-		minX = 0;
-		maxX = width - 26;
-		minY = 0;
-		maxY = height - 37;		
-		bunnies = new Array<Bunny>();	
-		Configuration.setScreen(this);
-	}	
-	
-	override public function mouseDown(x:Int, y:Int):Void 
+	private function mouseDown(button:Int, x:Int, y:Int):Void 
 	{
-		addBunnies(1000);
+		var count:Int = button == 0 ? 10000 : 1000;
+		for (i in 0...count) {
+			var bunny:Bunny = new Bunny();
+			bunny.speedX = Math.random() * 5;
+			bunny.speedY = Math.random() * 5 - 2.5;
+			bunnies.push(bunny);
+		}
+        bCount = bunnies.length;
 	}
 	
-	override public function update():Void 
+	private function update():Void 
 	{
 		for (i in 0...bunnies.length) {
 			var bunny:Bunny = bunnies[i];
+            
 			bunny.x += bunny.speedX;
 			bunny.y += bunny.speedY;
 			bunny.speedY += gravity;			
@@ -85,39 +91,35 @@ class Empty extends Game {
 				bunny.y = minY;
 			}	
 		}
-		
-		fps.update();
 	}
 	
-	override public function render(frame:Framebuffer):Void 
+	public function render(framebuffer:Framebuffer):Void 
 	{
-		g.begin();
-		g.transformation = FastMatrix3.identity();	
-		
-		for (i in 0...bunnies.length) {
-			g.drawImage(bunnies[i].texture, bunnies[i].x, bunnies[i].y);
-		}			
-		
-		g.drawScaledImage(fill, 0, 0, 800, 15);
-		g.drawString("FPS = " + fps.fps + "           COUNT=" + bunniesCount, 0, 0);
-		
-		g.end();
-		
-		startRender(frame);
-		Scaler.scale(backbuffer, frame, Sys.screenRotation);
-		endRender(frame);	
-		
-		fps.calcFrames();
-	}
-	
-	private function addBunnies(count:Int):Void
-	{
-		for (i in 0...count) {
-			var bunny:Bunny = new Bunny();
-			bunny.speedX = Math.random() * 5;
-			bunny.speedY = (Math.random() * 5) - 2.5;
-			bunnies.push(bunny);
-		}
-		bunniesCount += count;
+        var currentTime:Float = Scheduler.realTime();
+        deltaTime = (currentTime - previousTime);
+        
+        elapsedTime += deltaTime;
+        if (elapsedTime >= 1.0) {
+            fps = totalFrames;
+            totalFrames = 0;
+            elapsedTime = 0;
+        }
+        totalFrames++;
+        
+        framebuffer.g2.begin(true, backgroundColor);
+        framebuffer.g2.color = 0xFFFFFFFF;
+        for (bunny in bunnies){
+            framebuffer.g2.drawImage(bunnyTex, bunny.x, bunny.y);
+        }
+        
+        framebuffer.g2.font = font;
+        framebuffer.g2.fontSize = 16;
+        framebuffer.g2.color = 0xFF000000;
+        framebuffer.g2.fillRect(0, 0, Main.SCREEN_W, 20);
+        framebuffer.g2.color = 0xFFFFFFFF;
+        framebuffer.g2.drawString("bunnies: " + bCount + "         fps: " + fps, 10, 2);
+        framebuffer.g2.end();
+        
+        previousTime = currentTime;
 	}
 }
