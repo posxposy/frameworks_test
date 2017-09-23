@@ -17,15 +17,15 @@ class Empty
 {
     private var bunnyTex:Image;
     private var font:Font;
-    
+
     private var bCount:Int = 0;
-	private var bunnies:Array<Bunny>;
-	private var gravity:Float = 0.5;
-	private var maxX:Int;
-	private var maxY:Int;
-	private var minX:Int;
-	private var minY:Int;
-	
+    private var bunnies:Array<Bunny>;
+    private var gravity:Float = 0.5;
+    private var maxX:Int;
+    private var maxY:Int;
+    private var minX:Int;
+    private var minY:Int;
+
     //------------------------------------------------
     private var backgroundColor:Int = 0xFF2A3347;
     private var deltaTime:Float = 0.0;
@@ -34,10 +34,10 @@ class Empty
     private var previousTime:Float = 0.0;
     private var fps:Int = 0;
     //------------------------------------------------
-	
+
     public function new() 
     {
-		Assets.loadEverything(function():Void 
+        Assets.loadEverything(function():Void 
         {
             font = Assets.fonts.mainfont;
             bunnyTex = Assets.images.wabbit_alpha;
@@ -53,48 +53,48 @@ class Empty
             Scheduler.addTimeTask(update, 0, 1/60);
             System.notifyOnRender(render);
         });
-	}
-	
-	private function mouseDown(button:Int, x:Int, y:Int):Void 
-	{
-		var count:Int = button == 0 ? 10000 : 1000;
-		for (i in 0...count) {
-			var bunny:Bunny = new Bunny();
-			bunny.speedX = Math.random() * 5;
-			bunny.speedY = Math.random() * 5 - 2.5;
-			bunnies.push(bunny);
-		}
+    }
+
+    private function mouseDown(button:Int, x:Int, y:Int):Void 
+    {
+        var count:Int = button == 0 ? 10000 : 1000;
+        for (i in 0...count) {
+            var bunny:Bunny = new Bunny();
+            bunny.speedX = Math.random() * 5;
+            bunny.speedY = Math.random() * 5 - 2.5;
+            bunnies.push(bunny);
+        }
         bCount = bunnies.length;
-	}
-	
-	private function update():Void 
-	{
-		for (i in 0...bunnies.length) {
-			var bunny:Bunny = bunnies[i];
+    }
+
+    private function update():Void 
+    {
+        for (i in 0...bunnies.length) {
+            var bunny:Bunny = bunnies[i];
             
-			bunny.x += bunny.speedX;
-			bunny.y += bunny.speedY;
-			bunny.speedY += gravity;			
-			
-			if (bunny.x > maxX) {
-				bunny.speedX *= -1;
-				bunny.x = maxX;
-			} else if (bunny.x < minX) {
-				bunny.speedX *= -1;
-				bunny.x = minX;
-			} if (bunny.y > maxY) {
-				bunny.speedY *= -0.8;
-				bunny.y = maxY;
-				if (Math.random() > 0.5) bunny.speedY -= 3 + Math.random() * 4;
-			}  else if (bunny.y < minY) {
-				bunny.speedY = 0;
-				bunny.y = minY;
-			}	
-		}
-	}
-	
-	public function render(framebuffer:Framebuffer):Void 
-	{
+            bunny.x += bunny.speedX;
+            bunny.y += bunny.speedY;
+            bunny.speedY += gravity;
+            
+            if (bunny.x > maxX) {
+                bunny.speedX *= -1;
+                bunny.x = maxX;
+            } else if (bunny.x < minX) {
+                bunny.speedX *= -1;
+                bunny.x = minX;
+            } if (bunny.y > maxY) {
+                bunny.speedY *= -0.8;
+                bunny.y = maxY;
+                if (Math.random() > 0.5) bunny.speedY -= 3 + Math.random() * 4;
+            }  else if (bunny.y < minY) {
+                bunny.speedY = 0;
+                bunny.y = minY;
+            }
+        }
+    }
+
+    public function render(framebuffer:Framebuffer):Void 
+    {
         var currentTime:Float = Scheduler.realTime();
         deltaTime = (currentTime - previousTime);
         
@@ -121,5 +121,5 @@ class Empty
         framebuffer.g2.end();
         
         previousTime = currentTime;
-	}
+    }
 }
